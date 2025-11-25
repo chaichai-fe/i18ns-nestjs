@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { ValidationPipe } from '@nestjs/common'
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
-import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes'
+import { setupSwagger } from './config/swagger.config'
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   // 设置全局前缀
@@ -19,30 +19,12 @@ async function bootstrap() {
   })
 
   // 设置Swagger
-  const config = new DocumentBuilder()
-    .setTitle('Translation API')
-    .setDescription('Translation API description')
-    .setVersion('1.0')
-    .addTag('translations')
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-        name: 'Authorization',
-        description: 'JWT Token, format: Bearer <token>',
-        in: 'header',
-      },
-      'access-token',
-    )
-    .build()
-  const documentFactory = () => SwaggerModule.createDocument(app, config)
-  const theme = new SwaggerTheme()
-  const options = {
-    explorer: true,
-    customCss: theme.getBuffer(SwaggerThemeNameEnum.MUTED),
-  }
-  SwaggerModule.setup('swagger', app, documentFactory, options)
+  setupSwagger(app, {
+    title: 'Translation API',
+    description: 'Translation API description',
+    version: '1.0',
+    path: 'swagger',
+  })
 
   // 设置端口
   await app.listen(process.env.PORT ?? 3000)

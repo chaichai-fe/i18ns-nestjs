@@ -4,6 +4,7 @@ import { BusinessTagModule } from './businessTag/businessTag.module'
 import { TranslationsModule } from './translations/translations.module'
 import { AuthModule } from './auth/auth.module'
 import { AppController } from './app.controller'
+
 @Module({
   imports: [LangTagModule, BusinessTagModule, TranslationsModule, AuthModule],
   controllers: [AppController],

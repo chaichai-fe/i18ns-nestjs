@@ -79,7 +79,7 @@ export class TranslationsController {
   }
 
   @UseGuards(AuthGuard)
-  @ApiBearerAuth('access-token')
+  @ApiBearerAuth('access-token') // swagger 认证使用
   @Get('export/json')
   async downloadTranslationsAsJson(@Res() res: Response) {
     const translations = await this.translationsService.getTranslationsAsJson()
